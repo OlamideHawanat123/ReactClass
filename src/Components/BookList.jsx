@@ -1,63 +1,71 @@
 import styles from './booklist.module.css';
 import { useState } from 'react';
-
+import React from "react"
 
 const BookList = () => {
-
 	const bookList = [
-	"Name of the Wind",
-	"The Wise Man's Fear",
-	"Kafka on the Shore",
-	"The Master and the Margarita"
-	]
+		"Name of the Wind",
+		"The Wise Man's Fear",
+		"Kafka on the Shore",
+		"The Master and the Margarita"
+	];
 
 	const [books, setBooks] = useState(bookList);
-	const [newBook, setNewBook] = useState("")
+	const [newBook, setNewBook] = useState("");
+	const [searchTerm, setSearchTerm] = useState("");
 
 	const handleDelete = (clickedIndex) => {
 		const filteredBooks = books.filter((_, index) => index !== clickedIndex);
-		setBooks(filteredBooks)
-	}
+		setBooks(filteredBooks);
+	};
 
-	const addNewBookHandler = (event)=>{
-		const book = event.target.value.trim()
-		setNewBook(book)	
-	}
+	const addNewBookHandler = (event) => {
+		const book = event.target.value.trim();
+		setNewBook(book);
+	};
 
-	const submitNewBook = (event) =>{
-		event.preventDefault()
-		if(newBook !== ""){
-			setBooks((prev)=>([...prev, newBook]))
+	const submitNewBook = (event) => {
+		event.preventDefault();
+		if (newBook !== "") {
+			setBooks((prev) => [...prev, newBook]);
 		}
-		setNewBook("")
-	}
+		setNewBook("");
+	};
 
-    return (
-       
+	const handleSearch = (event) => {
+		setSearchTerm(event.target.value.toLowerCase());
+	};
+
+	const filteredBooks = books.filter((book) =>
+		book.toLowerCase().includes(searchTerm)
+	);
+
+	return (
 		<div className={styles.wrapper}>
 			<header>
 				<div className={styles.pageBanner}>
 					<h1 className={styles.title}> Book Collections</h1>
 					<p>Books</p>
 					<form className={styles.searchBooks}>
-						<input type="text" placeholder="Search books..." />
+						<input
+							type="text"
+							placeholder="Search books..."
+							value={searchTerm}
+							onChange={handleSearch}
+						/>
 					</form>
 				</div>
 			</header>
 			<div className={styles.bookList}>
-				<h2 classNameName={styles.subtitle}>Books to Read</h2>
-				{
-					books.map((book, index)=>(
-					<ul>
+				<h2 className={styles.subtitle}>Books to Read</h2>
+				{filteredBooks.map((book, index) => (
+					<ul key={index}>
 						<li>
 							<span className={styles.name}>{book}</span>
 							<span onClick={() => handleDelete(index)} className={styles.delete}>delete</span>
 						</li>
 					</ul>
-					))
-				}
-
-
+				))}
 				{/* <ul>
 					<li>
 						<span className={styles.name}>Name of the Wind</span>
@@ -78,11 +86,16 @@ const BookList = () => {
 				</ul> */}
 			</div>
 			<form onSubmit={submitNewBook} className={styles.addBook}>
-				<input onChange={addNewBookHandler} value={newBook} type="text" placeholder="Add a book..." />
+				<input
+					onChange={addNewBookHandler}
+					value={newBook}
+					type="text"
+					placeholder="Add a book..."
+				/>
 				<button>Add</button>
 			</form>
-		</div> 
-    )      
-}
+		</div>
+	);
+};
 
 export default BookList;
