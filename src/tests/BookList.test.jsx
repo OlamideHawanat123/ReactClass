@@ -1,7 +1,7 @@
 import {test, expect, beforeEach, afterEach} from "vitest"
 import BookList from "../Components/BookList";
 import {cleanup, fireEvent, getAllByText, render, screen} from "@testing-library/react";
-screen
+
 test("sum of 2 and 3 is 5", () => {
     const answer = 2+3;
     expect(answer).toBe(5)
